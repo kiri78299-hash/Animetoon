@@ -1,0 +1,2037 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnimeToon</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        :root {
+            --bg: #05060d;
+            --card: #0c0d18;
+            --card2: #111321;
+            --text: #fff;
+            --muted: #9295a8;
+            --pink: #ff2690;
+            --pink2: #ff4ca5;
+            --border: #25283a;
+            --shadow: rgba(0, 0, 0, .5);
+        }
+
+        body.light {
+            --bg: #f5f6fa;
+            --card: #ffffff;
+            --card2: #f0f1f6;
+            --text: #151520;
+            --muted: #666b7d;
+            --border: #dedfea;
+            --shadow: rgba(0, 0, 0, .12);
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            transition: .3s;
+        }
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 225px;
+            height: 100vh;
+            background: var(--card);
+            border-right: 1px solid var(--border);
+            padding: 25px 18px;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 27px;
+            font-weight: 900;
+            margin-left: 20px;
+            margin-bottom: 35px;
+            letter-spacing: -1px;
+        }
+
+        .logo span {
+            color: var(--pink);
+        }
+
+        .logo small {
+            display: block;
+            color: var(--pink);
+            font-size: 10px;
+            margin-top: 2px;
+            letter-spacing: 3px;
+        }
+
+        .nav {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .nav button,
+        .menuBtn {
+            border: 0;
+            background: transparent;
+            color: var(--text);
+            padding: 14px 15px;
+            border-radius: 9px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 14px;
+            transition: .2s;
+        }
+
+        .nav button:hover,
+        .menuBtn:hover {
+            background: rgba(255, 38, 144, .1);
+        }
+
+        .nav button.active {
+            background: linear-gradient(90deg, rgba(255, 38, 144, .2), rgba(255, 38, 144, .04));
+            border: 1px solid var(--pink);
+            color: white;
+        }
+
+        .sectionTitle {
+            color: var(--muted);
+            font-size: 11px;
+            margin: 30px 10px 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .genreMini {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            max-height: 350px;
+            overflow: auto;
+        }
+
+        .genreMini button {
+            background: none;
+            border: 0;
+            color: var(--text);
+            text-align: left;
+            padding: 9px 12px;
+            cursor: pointer;
+            border-radius: 7px;
+        }
+
+        .genreMini button:hover {
+            background: rgba(255, 38, 144, .1);
+            color: var(--pink);
+        }
+
+        .premium {
+            position: absolute;
+            left: 18px;
+            right: 18px;
+            bottom: 20px;
+            padding: 18px;
+            border: 1px solid #42223c;
+            background: linear-gradient(145deg, #1d1022, #100b17);
+            border-radius: 10px;
+        }
+
+        body.light .premium {
+            background: #fff1fa;
+        }
+
+        .premium h3 {
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .premium p {
+            color: var(--muted);
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .premium button {
+            margin-top: 14px;
+            width: 100%;
+            padding: 11px;
+            border: 0;
+            border-radius: 7px;
+            background: var(--pink);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* ================= MAIN ================= */
+
+        .main {
+            margin-left: 225px;
+            padding: 30px 25px;
+        }
+
+        /* HEADER */
+
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            margin-bottom: 20px;
+        }
+
+        .mobileMenu {
+            display: none;
+        }
+
+        .searchBox {
+            height: 60px;
+            flex: 1;
+            border: 1px solid var(--pink);
+            border-radius: 16px;
+            background: var(--card);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            box-shadow: 0 0 20px rgba(255, 38, 144, .12);
+        }
+
+        .searchBox span {
+            font-size: 28px;
+        }
+
+        .searchBox input {
+            flex: 1;
+            border: 0;
+            outline: 0;
+            background: none;
+            color: var(--text);
+            font-size: 18px;
+            padding: 0 15px;
+        }
+
+        .searchBox input::placeholder {
+            color: var(--muted);
+        }
+
+        .headerRight {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .headerBtn {
+            height: 42px;
+            padding: 0 15px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--card);
+            color: var(--text);
+            cursor: pointer;
+        }
+
+        .languageSelect {
+            position: relative;
+        }
+
+        .languageMenu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 50px;
+            width: 180px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 7px;
+            z-index: 300;
+            box-shadow: 0 15px 40px var(--shadow);
+        }
+
+        .languageMenu.show {
+            display: block;
+        }
+
+        .languageMenu button {
+            width: 100%;
+            background: none;
+            border: 0;
+            color: var(--text);
+            padding: 11px;
+            text-align: left;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        .languageMenu button:hover {
+            background: rgba(255, 38, 144, .12);
+        }
+
+        /* THEME */
+
+        .theme {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .switch {
+            width: 48px;
+            height: 25px;
+            border-radius: 30px;
+            background: var(--pink);
+            padding: 3px;
+            cursor: pointer;
+        }
+
+        .switch i {
+            display: block;
+            width: 19px;
+            height: 19px;
+            background: white;
+            border-radius: 50%;
+            transition: .3s;
+        }
+
+        body.light .switch i {
+            transform: translateX(23px);
+        }
+
+        /* ================= HERO ================= */
+
+        .hero {
+            height: 335px;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid var(--border);
+            margin-bottom: 25px;
+            background: #111;
+        }
+
+        .hero img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg,
+                    rgba(0, 0, 0, .95) 0%,
+                    rgba(0, 0, 0, .75) 35%,
+                    rgba(0, 0, 0, .15) 80%);
+        }
+
+        .heroContent {
+            position: absolute;
+            z-index: 2;
+            left: 40px;
+            top: 55px;
+            max-width: 450px;
+        }
+
+        .featured {
+            color: var(--pink);
+            font-weight: bold;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            color: #ddd;
+            line-height: 1.5;
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        .heroButtons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .primary {
+            border: 0;
+            padding: 12px 20px;
+            border-radius: 7px;
+            background: var(--pink);
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .secondary {
+            border: 1px solid #777;
+            padding: 11px 18px;
+            border-radius: 7px;
+            background: rgba(0, 0, 0, .4);
+            color: white;
+            cursor: pointer;
+        }
+
+        /* ================= CATEGORY BUTTONS ================= */
+
+        .quick {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+
+        .quick button {
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--text);
+            border-radius: 10px;
+            padding: 16px 10px;
+            cursor: pointer;
+            text-align: left;
+        }
+
+        .quick button:hover {
+            border-color: var(--pink);
+            transform: translateY(-2px);
+        }
+
+        .quickIcon {
+            font-size: 23px;
+            margin-bottom: 8px;
+        }
+
+        .quick strong {
+            display: block;
+        }
+
+        .quick small {
+            color: var(--muted);
+        }
+
+        /* ================= TITLES ================= */
+
+        .titleRow {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 25px 0 15px;
+        }
+
+        .titleRow h2 {
+            font-size: 20px;
+        }
+
+        .titleRow h2::before {
+            content: "";
+            display: inline-block;
+            width: 4px;
+            height: 20px;
+            background: var(--pink);
+            margin-right: 10px;
+            vertical-align: -3px;
+            border-radius: 5px;
+        }
+
+        .viewAll {
+            background: none;
+            border: 0;
+            color: var(--text);
+            cursor: pointer;
+        }
+
+        /* ================= ANIME SLIDER ================= */
+
+        .slider {
+            display: flex;
+            gap: 14px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding-bottom: 10px;
+        }
+
+        .slider::-webkit-scrollbar {
+            height: 5px;
+        }
+
+        .slider::-webkit-scrollbar-thumb {
+            background: var(--pink);
+            border-radius: 20px;
+        }
+
+        .animeCard {
+            min-width: 160px;
+            width: 160px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            transition: .25s;
+        }
+
+        .animeCard:hover {
+            transform: translateY(-7px);
+            border-color: var(--pink);
+            box-shadow: 0 10px 30px rgba(255, 38, 144, .15);
+        }
+
+        .poster {
+            width: 100%;
+            height: 225px;
+            object-fit: cover;
+            background: #181925;
+        }
+
+        .badge {
+            position: absolute;
+            top: 8px;
+            left: 7px;
+            background: var(--pink);
+            color: white;
+            font-size: 10px;
+            padding: 4px 7px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .rating {
+            position: absolute;
+            top: 8px;
+            right: 7px;
+            background: rgba(0, 0, 0, .8);
+            padding: 4px 6px;
+            border-radius: 5px;
+            font-size: 10px;
+        }
+
+        .cardInfo {
+            padding: 11px;
+        }
+
+        .cardInfo h3 {
+            font-size: 13px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 5px;
+        }
+
+        .cardInfo p {
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        /* ================= ALL ANIME ================= */
+
+        .animeGrid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 15px;
+        }
+
+        .animeGrid .animeCard {
+            width: 100%;
+            min-width: 0;
+        }
+
+        /* ================= GENRES ================= */
+
+        .genreGrid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+        }
+
+        .genreCard {
+            padding: 25px;
+            border: 1px solid var(--border);
+            background: var(--card);
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: center;
+            transition: .2s;
+        }
+
+        .genreCard:hover {
+            border-color: var(--pink);
+            transform: translateY(-4px);
+        }
+
+        .genreCard div {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .genreCard strong {
+            font-size: 14px;
+        }
+
+        /* ================= FAVOURITES ================= */
+
+        .empty {
+            padding: 60px 20px;
+            text-align: center;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--muted);
+        }
+
+        /* ================= MODAL ================= */
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modalBox {
+            width: min(800px, 100%);
+            max-height: 90vh;
+            overflow: auto;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            right: 15px;
+            top: 12px;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: 0;
+            background: rgba(0, 0, 0, .7);
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 3;
+        }
+
+        .modalTop {
+            display: flex;
+            gap: 25px;
+            padding: 25px;
+        }
+
+        .modalTop img {
+            width: 220px;
+            height: 310px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .modalInfo {
+            padding-top: 20px;
+        }
+
+        .modalInfo h2 {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .modalInfo p {
+            color: var(--muted);
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+        }
+
+        .tags span {
+            background: rgba(255, 38, 144, .12);
+            color: var(--pink);
+            padding: 6px 9px;
+            border-radius: 5px;
+            font-size: 11px;
+        }
+
+        /* ================= SEARCH RESULTS ================= */
+
+        #searchResults {
+            display: none;
+        }
+
+        .noResults {
+            text-align: center;
+            padding: 50px;
+            color: var(--muted);
+        }
+
+        /* ================= MOBILE ================= */
+
+        @media(max-width:1100px) {
+            .animeGrid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .quick {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .genreGrid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media(max-width:800px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: .3s;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 15px;
+            }
+
+            .mobileMenu {
+                display: block;
+                border: 0;
+                background: none;
+                color: var(--text);
+                font-size: 25px;
+                cursor: pointer;
+            }
+
+            .header {
+                gap: 10px;
+            }
+
+            .headerRight {
+                gap: 5px;
+            }
+
+            .headerBtn {
+                padding: 0 9px;
+            }
+
+            .hero {
+                height: 330px;
+            }
+
+            .heroContent {
+                left: 25px;
+                top: 45px;
+            }
+
+            .hero h1 {
+                font-size: 38px;
+            }
+
+            .animeGrid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .genreGrid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media(max-width:550px) {
+            .headerRight .langText {
+                display: none;
+            }
+
+            .searchBox {
+                height: 50px;
+            }
+
+            .searchBox input {
+                font-size: 14px;
+            }
+
+            .quick {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .animeGrid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .modalTop {
+                flex-direction: column;
+            }
+
+            .modalTop img {
+                width: 180px;
+                height: 260px;
+            }
+
+            .hero h1 {
+                font-size: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar" id="sidebar">
+
+        <div class="logo">
+            ANIME<span>TOON</span><sup>★</sup>
+            <small>アニメトゥーン</small>
+        </div>
+
+        <div class="nav">
+            <button class="active" onclick="showPage('home')" id="homeNav">
+                🏠 &nbsp; <span data-i18n="home">Home</span>
+            </button>
+
+            <button onclick="showPage('anime')" id="animeNav">
+                🎬 &nbsp; <span data-i18n="animeMovies">Anime & Movies</span>
+            </button>
+        </div>
+
+        <div class="sectionTitle" data-i18n="menu">Menu</div>
+
+        <div class="nav">
+            <button class="menuBtn" onclick="openLanguages()">
+                🌐 &nbsp; <span data-i18n="languages">Languages</span>
+            </button>
+
+            <button class="menuBtn" onclick="showFavourites()">
+                💗 &nbsp; <span data-i18n="favourites">Favourites</span>
+            </button>
+
+            <button class="menuBtn" onclick="showGenres()">
+                ▦ &nbsp; <span data-i18n="categories">Categories</span>
+            </button>
+        </div>
+
+        <div class="sectionTitle" data-i18n="genres">Genres</div>
+
+        <div class="genreMini" id="miniGenres"></div>
+
+        <div class="premium">
+            <h3>💎 Premium Experience</h3>
+            <p>Ad-free • High Quality<br>Early Access • More</p>
+            <button>👑 Go Premium</button>
+        </div>
+    </aside>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main">
+
+        <header class="header">
+
+            <button class="mobileMenu" onclick="toggleSidebar()">☰</button>
+
+            <div class="searchBox">
+                <span>⌕</span>
+                <input type="text" id="searchInput" placeholder="Search anime, movies, genres..."
+                    oninput="searchAnime()">
+            </div>
+
+            <div class="headerRight">
+
+                <div class="languageSelect">
+                    <button class="headerBtn" onclick="openLanguages()">
+                        🌐 <span class="langText" id="currentLanguage">EN</span>⌄
+                    </button>
+
+                    <div class="languageMenu" id="languageMenu">
+                        <button onclick="changeLanguage('en')">🇬🇧 English</button>
+                        <button onclick="changeLanguage('ja')">🇯🇵 日本語</button>
+                        <button onclick="changeLanguage('ta')">🇮🇳 தமிழ்</button>
+                        <button onclick="changeLanguage('hi')">🇮🇳 हिन्दी</button>
+                    </div>
+                </div>
+
+                <div class="theme">
+                    <span>🌙</span>
+                    <div class="switch" onclick="toggleTheme()">
+                        <i></i>
+                    </div>
+                    <span>☀️</span>
+                </div>
+
+            </div>
+        </header>
+
+
+        <!-- ================= HOME ================= -->
+
+        <section id="homePage">
+
+            <div class="hero">
+
+                <img id="heroImage" src="https://cdn.myanimelist.net/images/anime/1806/126216l.jpg"
+                    onerror="this.src='https://placehold.co/1200x500/090912/ff2690?text=AnimeToon'">
+
+                <div class="heroContent">
+
+                    <div class="featured" data-i18n="featured">FEATURED</div>
+
+                    <h1 id="heroTitle">Chainsaw Man</h1>
+
+                    <p id="heroDescription">
+                        Betrayed and killed, ateenager named denji gets revived as chainsaw man, asoul with a devil's heeart
+                    </p>
+
+                    <div class="heroButtons">
+                        <button class="primary" onclick="heroWatch()">
+                            ▶ <span data-i18n="watchNow">Watch Now</span>
+                        </button>
+
+                        <button class="secondary" onclick="addHeroFavourite()">
+                            ＋ <span data-i18n="addFavourite">Add to Favourites</span>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <!-- QUICK -->
+
+            <div class="quick">
+
+                <button onclick="showPage('anime')">
+                    <div class="quickIcon">◉</div>
+                    <strong data-i18n="all">All</strong>
+                    <small>100+ Anime</small>
+                </button>
+
+                <button onclick="scrollTrending()">
+                    <div class="quickIcon">🔥</div>
+                    <strong data-i18n="trending">Trending</strong>
+                    <small>Popular</small>
+                </button>
+
+                <button onclick="showPage('anime')">
+                    <div class="quickIcon">🆕</div>
+                    <strong data-i18n="newEpisodes">New Episodes</strong>
+                    <small>This Week</small>
+                </button>
+
+                <button onclick="showPage('anime')">
+                    <div class="quickIcon">🎬</div>
+                    <strong data-i18n="movies">Movies</strong>
+                    <small>Top Picks</small>
+                </button>
+
+                <button onclick="showPage('anime')">
+                    <div class="quickIcon">⭐</div>
+                    <strong data-i18n="topRated">Top Rated</strong>
+                    <small>Highest Rated</small>
+                </button>
+
+                <button onclick="showPage('anime')">
+                    <div class="quickIcon">▶</div>
+                    <strong data-i18n="ongoing">Ongoing</strong>
+                    <small>Continue</small>
+                </button>
+
+            </div>
+
+
+            <!-- TRENDING -->
+
+            <div class="titleRow">
+                <h2 data-i18n="trendingNow">Trending Now</h2>
+                <button class="viewAll" onclick="showPage('anime')">
+                    <span data-i18n="viewAll">View All</span> →
+                </button>
+            </div>
+
+            <div class="slider" id="trendingSlider"></div>
+
+
+            <!-- LATEST -->
+
+            <div class="titleRow">
+                <h2 data-i18n="latestReleases">Latest Releases</h2>
+                <button class="viewAll" onclick="showPage('anime')">
+                    <span data-i18n="viewAll">View All</span> →
+                </button>
+            </div>
+
+            <div class="slider" id="latestSlider"></div>
+
+        </section>
+
+
+        <!-- ================= ANIME & MOVIES ================= -->
+
+        <section id="animePage" style="display:none">
+
+            <div class="titleRow">
+                <h2 data-i18n="animeMovies">Anime & Movies</h2>
+                <span id="animeCount" style="color:var(--muted)"></span>
+            </div>
+
+            <div class="animeGrid" id="animeGrid"></div>
+
+        </section>
+
+
+        <!-- ================= GENRES ================= -->
+
+        <section id="genrePage" style="display:none">
+
+            <div class="titleRow">
+                <h2 data-i18n="allGenres">All Genres</h2>
+            </div>
+
+            <div class="genreGrid" id="genreGrid"></div>
+
+        </section>
+
+
+        <!-- ================= FAVOURITES ================= -->
+
+        <section id="favouritePage" style="display:none">
+
+            <div class="titleRow">
+                <h2 data-i18n="favourites">Favourites</h2>
+            </div>
+
+            <div class="animeGrid" id="favouriteGrid"></div>
+
+        </section>
+
+
+        <!-- ================= SEARCH ================= -->
+
+        <section id="searchResults">
+
+            <div class="titleRow">
+                <h2>Search Results</h2>
+            </div>
+
+            <div class="animeGrid" id="searchGrid"></div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ================= MODAL ================= -->
+
+    <div class="modal" id="animeModal">
+
+        <div class="modalBox">
+
+            <button class="close" onclick="closeModal()">×</button>
+
+            <div class="modalTop">
+
+                <img id="modalImage">
+
+                <div class="modalInfo">
+
+                    <h2 id="modalTitle"></h2>
+
+                    <p id="modalDescription"></p>
+
+                    <p>
+                        ⭐ <strong id="modalRating"></strong>
+                        &nbsp; | &nbsp;
+                        <span id="modalEpisodes"></span>
+                    </p>
+
+                    <div class="tags" id="modalGenres"></div>
+
+                    <br>
+
+                    <button class="primary" id="modalFavourite">
+                        💗 Add Favourite
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <script>
+
+        /* ==========================================================
+           ANIMETOON
+           100 ANIME DATA
+        ========================================================== */
+
+        const animeData = [
+
+            "One Piece",
+            "Naruto",
+            "Naruto: Shippuden",
+            "Bleach",
+            "Dragon Ball Z",
+            "Dragon Ball Super",
+            "Attack on Titan",
+            "Demon Slayer",
+            "Jujutsu Kaisen",
+            "Solo Leveling",
+            "My Hero Academia",
+            "One Punch Man",
+            "Death Note",
+            "Fullmetal Alchemist: Brotherhood",
+            "Hunter x Hunter",
+            "Tokyo Ghoul",
+            "Sword Art Online",
+            "Black Clover",
+            "Fairy Tail",
+            "Haikyuu!!",
+            "Blue Lock",
+            "Chainsaw Man",
+            "Spy x Family",
+            "Vinland Saga",
+            "Dr. Stone",
+            "Mob Psycho 100",
+            "JoJo's Bizarre Adventure",
+            "Steins;Gate",
+            "Code Geass",
+            "Tokyo Revengers",
+            "Fire Force",
+            "Classroom of the Elite",
+            "Re:Zero",
+            "Overlord",
+            "That Time I Got Reincarnated as a Slime",
+            "Konosuba",
+            "Made in Abyss",
+            "Frieren: Beyond Journey's End",
+            "The Apothecary Diaries",
+            "Delicious in Dungeon",
+            "Kaiju No. 8",
+            "Wind Breaker",
+            "Solo Leveling Season 2",
+            "Boruto",
+            "Black Lagoon",
+            "Samurai Champloo",
+            "Neon Genesis Evangelion",
+            "Code Geass R2",
+            "Parasyte",
+            "Erased",
+            "Another",
+            "Noragami",
+            "Blue Exorcist",
+            "Assassination Classroom",
+            "Akame ga Kill!",
+            "Akira",
+            "Your Name",
+            "A Silent Voice",
+            "Suzume",
+            "Weathering With You",
+            "Spirited Away",
+            "My Neighbor Totoro",
+            "Howl's Moving Castle",
+            "Princess Mononoke",
+            "Perfect Blue",
+            "Paprika",
+            "Grave of the Fireflies",
+            "Castle in the Sky",
+            "Jujutsu Kaisen 0",
+            "Demon Slayer: Mugen Train",
+            "Dragon Ball Super: Broly",
+            "One Piece Film Red",
+            "My Hero Academia: Heroes Rising",
+            "Black Clover: Sword of the Wizard King",
+            "Naruto the Movie",
+            "Bleach: Hell Verse",
+            "Detective Conan",
+            "Crayon Shin-chan",
+            "Doraemon",
+            "Pokemon",
+            "Digimon Adventure",
+            "Yu-Gi-Oh!",
+            "Bakugan Battle Brawlers",
+            "Initial D",
+            "Food Wars!",
+            "Kuroko's Basketball",
+            "Free!",
+            "Violet Evergarden",
+            "Clannad",
+            "Toradora!",
+            "Your Lie in April",
+            "Fruits Basket",
+            "Kaguya-sama: Love Is War",
+            "Horimiya",
+            "Classroom of the Elite Season 2",
+            "Masamune-kun's Revenge",
+            "Rent-a-Girlfriend",
+            "The Rising of the Shield Hero",
+            "Fire Force Season 2",
+            "Tokyo Revengers Season 2",
+            "Wind Breaker Season 2"
+        ];
+
+
+        /* ==========================================================
+           GENRES
+        ========================================================== */
+
+        const genres = [
+            "Action",
+            "Adventure",
+            "Comedy",
+            "Drama",
+            "Fantasy",
+            "Romance",
+            "Sci-Fi",
+            "Horror",
+            "Isekai",
+            "School",
+            "Sports",
+            "Music",
+            "Supernatural",
+            "Mystery",
+            "Psychological",
+            "Thriller",
+            "Historical",
+            "Military",
+            "Magic",
+            "Mecha",
+            "Martial Arts",
+            "Samurai",
+            "Demons",
+            "Vampire",
+            "Shounen",
+            "Shoujo",
+            "Seinen",
+            "Josei",
+            "Slice of Life",
+            "Ecchi",
+            "Family",
+            "Kids",
+            "Space",
+            "Cyberpunk",
+            "Crime",
+            "Detective",
+            "Cooking",
+            "Game",
+            "Medical",
+            "Parody"
+        ];
+
+
+        /* ==========================================================
+           LANGUAGE
+        ========================================================== */
+
+        const translations = {
+
+            en: {
+                home: "Home",
+                animeMovies: "Anime & Movies",
+                menu: "Menu",
+                languages: "Languages",
+                favourites: "Favourites",
+                categories: "Categories",
+                genres: "Genres",
+                featured: "FEATURED",
+                watchNow: "Watch Now",
+                addFavourite: "Add to Favourites",
+                all: "All",
+                trending: "Trending",
+                newEpisodes: "New Episodes",
+                movies: "Movies",
+                topRated: "Top Rated",
+                ongoing: "Ongoing",
+                trendingNow: "Trending Now",
+                latestReleases: "Latest Releases",
+                viewAll: "View All",
+                allGenres: "All Genres"
+            },
+
+            ja: {
+                home: "ホーム",
+                animeMovies: "アニメ＆映画",
+                menu: "メニュー",
+                languages: "言語",
+                favourites: "お気に入り",
+                categories: "カテゴリー",
+                genres: "ジャンル",
+                featured: "おすすめ",
+                watchNow: "今すぐ見る",
+                addFavourite: "お気に入りに追加",
+                all: "すべて",
+                trending: "トレンド",
+                newEpisodes: "新エピソード",
+                movies: "映画",
+                topRated: "高評価",
+                ongoing: "放送中",
+                trendingNow: "トレンド作品",
+                latestReleases: "最新リリース",
+                viewAll: "すべて見る",
+                allGenres: "すべてのジャンル"
+            },
+
+            ta: {
+                home: "முகப்பு",
+                animeMovies: "அனிமே & திரைப்படங்கள்",
+                menu: "மெனு",
+                languages: "மொழிகள்",
+                favourites: "விருப்பங்கள்",
+                categories: "வகைகள்",
+                genres: "வகைகள்",
+                featured: "சிறப்பு",
+                watchNow: "இப்போது பார்க்க",
+                addFavourite: "விருப்பங்களில் சேர்",
+                all: "அனைத்தும்",
+                trending: "பிரபலமானவை",
+                newEpisodes: "புதிய எபிசோடுகள்",
+                movies: "திரைப்படங்கள்",
+                topRated: "சிறந்த மதிப்பீடு",
+                ongoing: "தொடர்கிறது",
+                trendingNow: "இப்போது பிரபலமானவை",
+                latestReleases: "சமீபத்திய வெளியீடுகள்",
+                viewAll: "அனைத்தையும் பார்க்க",
+                allGenres: "அனைத்து வகைகளும்"
+            },
+
+            hi: {
+                home: "होम",
+                animeMovies: "एनीमे और फिल्में",
+                menu: "मेनू",
+                languages: "भाषाएं",
+                favourites: "पसंदीदा",
+                categories: "श्रेणियां",
+                genres: "शैलियां",
+                featured: "विशेष",
+                watchNow: "अभी देखें",
+                addFavourite: "पसंदीदा में जोड़ें",
+                all: "सभी",
+                trending: "ट्रेंडिंग",
+                newEpisodes: "नए एपिसोड",
+                movies: "फिल्में",
+                topRated: "टॉप रेटेड",
+                ongoing: "जारी",
+                trendingNow: "अभी ट्रेंडिंग",
+                latestReleases: "नवीनतम रिलीज",
+                viewAll: "सभी देखें",
+                allGenres: "सभी शैलियां"
+            }
+
+        };
+
+        let currentLang = "en";
+        let allAnime = [];
+        let favourites = [];
+        let currentAnime = null;
+
+
+        /* ==========================================================
+           LOAD 100 ANIME FROM JIKAN API
+        ========================================================== */
+
+        async function loadAnime() {
+
+            try {
+
+                const response =
+                    await fetch("https://api.jikan.moe/v4/top/anime?limit=100");
+
+                const data = await response.json();
+
+                allAnime = data.data;
+
+                renderTrending();
+                renderLatest();
+                renderAnimeGrid();
+                renderGenres();
+
+            } catch (error) {
+
+                console.log("API error:", error);
+
+                /*
+                FALLBACK
+                If API does not load, create 100 cards
+                */
+
+                allAnime = animeData.map((name, index) => ({
+
+                    mal_id: index + 1,
+                    title: name,
+                    title_english: name,
+                    synopsis: "Watch this amazing anime on AnimeToon.",
+                    score: (8 + (Math.random() * 1.8)).toFixed(1),
+                    episodes: Math.floor(Math.random() * 150) + 1,
+                    images: {
+                        jpg: {
+                            large_image_url:
+                                `https://placehold.co/300x450/100b18/ff2690?text=${encodeURIComponent(name)}`
+                        }
+                    },
+                    genres: [
+                        { name: genres[index % genres.length] }
+                    ]
+
+                }));
+
+                renderTrending();
+                renderLatest();
+                renderAnimeGrid();
+                renderGenres();
+            }
+        }
+
+
+        /* ==========================================================
+           ANIME CARD
+        ========================================================== */
+
+        function createAnimeCard(anime) {
+
+            const image =
+                anime.images?.jpg?.large_image_url ||
+                anime.images?.jpg?.image_url ||
+                `https://placehold.co/300x450/100b18/ff2690?text=${encodeURIComponent(anime.title)}`;
+
+            const title =
+                anime.title_english ||
+                anime.title ||
+                "Unknown Anime";
+
+            const score =
+                anime.score ?
+                    Number(anime.score).toFixed(1) :
+                    "8.5";
+
+            const episodes =
+                anime.episodes ||
+                "?";
+
+            const card = document.createElement("div");
+
+            card.className = "animeCard";
+
+            card.innerHTML = `
+
+        <img
+        class="poster"
+        src="${image}"
+        loading="lazy"
+        onerror="this.src='https://placehold.co/300x450/100b18/ff2690?text=AnimeToon'"
+        >
+
+        <div class="badge">TOP</div>
+
+        <div class="rating">
+            ⭐ ${score}
+        </div>
+
+        <div class="cardInfo">
+
+            <h3>${title}</h3>
+
+            <p>
+                ${episodes} Episodes
+            </p>
+
+        </div>
+    `;
+
+            card.onclick = () => {
+                openAnime(anime);
+            };
+
+            return card;
+        }
+
+
+        /* ==========================================================
+           TRENDING
+        ========================================================== */
+
+        function renderTrending() {
+
+            const slider =
+                document.getElementById("trendingSlider");
+
+            slider.innerHTML = "";
+
+            allAnime.slice(0, 20).forEach(anime => {
+                slider.appendChild(createAnimeCard(anime));
+            });
+        }
+
+
+        /* ==========================================================
+           LATEST
+        ========================================================== */
+
+        function renderLatest() {
+
+            const slider =
+                document.getElementById("latestSlider");
+
+            slider.innerHTML = "";
+
+            allAnime.slice(20, 40).forEach(anime => {
+                slider.appendChild(createAnimeCard(anime));
+            });
+        }
+
+
+        /* ==========================================================
+           100 ANIME GRID
+        ========================================================== */
+
+        function renderAnimeGrid(list = allAnime) {
+
+            const grid =
+                document.getElementById("animeGrid");
+
+            grid.innerHTML = "";
+
+            list.forEach(anime => {
+                grid.appendChild(createAnimeCard(anime));
+            });
+
+            document.getElementById("animeCount").textContent =
+                `${list.length} Anime`;
+        }
+
+
+        /* ==========================================================
+           GENRES
+        ========================================================== */
+
+        function renderGenres() {
+
+            const grid =
+                document.getElementById("genreGrid");
+
+            const mini =
+                document.getElementById("miniGenres");
+
+            grid.innerHTML = "";
+            mini.innerHTML = "";
+
+            const icons = [
+                "⚔️", "🗺️", "😂", "🎭", "🔮", "💗", "🚀", "👻",
+                "🌀", "🎓", "🏀", "🎵", "👁️", "🔎", "🧠", "😱",
+                "🏯", "🪖", "✨", "🤖", "🥋", "⚔️", "👹", "🧛",
+                "🔥", "🌸", "🖤", "💐", "☀️", "💋", "👨‍👩‍👧", "🧸",
+                "🌌", "💻", "🔫", "🕵️", "🍳", "🎮", "🏥", "🤣"
+            ];
+
+            genres.forEach((genre, index) => {
+
+                const miniButton = document.createElement("button");
+
+                miniButton.textContent =
+                    `${icons[index]} ${genre}`;
+
+                miniButton.onclick = () => {
+                    filterGenre(genre);
+                };
+
+                mini.appendChild(miniButton);
+
+
+                const card = document.createElement("div");
+
+                card.className = "genreCard";
+
+                card.innerHTML = `
+            <div>${icons[index]}</div>
+            <strong>${genre}</strong>
+        `;
+
+                card.onclick = () => {
+                    filterGenre(genre);
+                };
+
+                grid.appendChild(card);
+
+            });
+        }
+
+
+        /* ==========================================================
+           FILTER GENRE
+        ========================================================== */
+
+        function filterGenre(genre) {
+
+            showPage("anime");
+
+            const results = allAnime.filter(anime => {
+
+                const animeGenres =
+                    anime.genres?.map(g => g.name.toLowerCase()) || [];
+
+                return animeGenres.includes(genre.toLowerCase());
+            });
+
+            if (results.length > 0) {
+
+                renderAnimeGrid(results);
+
+            } else {
+
+                /*
+                Show all anime when API doesn't provide
+                enough genre information.
+                */
+
+                renderAnimeGrid(allAnime);
+            }
+        }
+
+
+        /* ==========================================================
+           PAGE SWITCH
+        ========================================================== */
+
+        function showPage(page) {
+
+            document.getElementById("homePage").style.display =
+                page === "home" ? "block" : "none";
+
+            document.getElementById("animePage").style.display =
+                page === "anime" ? "block" : "none";
+
+            document.getElementById("genrePage").style.display =
+                page === "genres" ? "block" : "none";
+
+            document.getElementById("favouritePage").style.display =
+                page === "favourites" ? "block" : "none";
+
+            document.getElementById("searchResults").style.display = "none";
+
+            document.getElementById("homeNav").classList.remove("active");
+            document.getElementById("animeNav").classList.remove("active");
+
+            if (page === "home") {
+                document.getElementById("homeNav").classList.add("active");
+            }
+
+            if (page === "anime") {
+                document.getElementById("animeNav").classList.add("active");
+            }
+
+            document.getElementById("sidebar").classList.remove("open");
+        }
+
+
+        /* ==========================================================
+           GENRES PAGE
+        ========================================================== */
+
+        function showGenres() {
+
+            showPage("genres");
+
+            document.getElementById("genrePage").style.display = "block";
+            document.getElementById("homePage").style.display = "none";
+            document.getElementById("animePage").style.display = "none";
+            document.getElementById("favouritePage").style.display = "none";
+        }
+
+
+        /* ==========================================================
+           FAVOURITES
+        ========================================================== */
+
+        function showFavourites() {
+
+            showPage("favourites");
+
+            const grid =
+                document.getElementById("favouriteGrid");
+
+            grid.innerHTML = "";
+
+            if (favourites.length === 0) {
+
+                grid.innerHTML = `
+            <div class="empty" style="grid-column:1/-1">
+                💗<br><br>
+                No favourites yet.<br>
+                Open an anime and add it to your favourites.
+            </div>
+        `;
+
+                return;
+            }
+
+            favourites.forEach(anime => {
+                grid.appendChild(createAnimeCard(anime));
+            });
+        }
+
+
+        function addFavourite(anime) {
+
+            const exists =
+                favourites.some(a => a.mal_id === anime.mal_id);
+
+            if (!exists) {
+
+                favourites.push(anime);
+
+                localStorage.setItem(
+                    "animetoonFavourites",
+                    JSON.stringify(favourites)
+                );
+
+                alert("Added to Favourites ❤️");
+
+            } else {
+
+                alert("Already in Favourites ❤️");
+
+            }
+        }
+
+
+        /* ==========================================================
+           MODAL
+        ========================================================== */
+
+        function openAnime(anime) {
+
+            currentAnime = anime;
+
+            const image =
+                anime.images?.jpg?.large_image_url ||
+                anime.images?.jpg?.image_url;
+
+            document.getElementById("modalImage").src = image;
+
+            document.getElementById("modalTitle").textContent =
+                anime.title_english || anime.title;
+
+            document.getElementById("modalDescription").textContent =
+                anime.synopsis ||
+                "Enjoy this anime on AnimeToon.";
+
+            document.getElementById("modalRating").textContent =
+                anime.score || "8.5";
+
+            document.getElementById("modalEpisodes").textContent =
+                `${anime.episodes || "?"} Episodes`;
+
+            const genreBox =
+                document.getElementById("modalGenres");
+
+            genreBox.innerHTML = "";
+
+            anime.genres?.forEach(g => {
+
+                const tag = document.createElement("span");
+
+                tag.textContent = g.name;
+
+                genreBox.appendChild(tag);
+
+            });
+
+            document.getElementById("modalFavourite").onclick = () => {
+                addFavourite(anime);
+            };
+
+            document.getElementById("animeModal")
+                .classList.add("show");
+        }
+
+
+        function closeModal() {
+
+            document.getElementById("animeModal")
+                .classList.remove("show");
+        }
+
+
+        /* ==========================================================
+           HERO
+        ========================================================== */
+
+        function heroWatch() {
+
+            if (allAnime.length) {
+
+                openAnime(allAnime[0]);
+
+            }
+        }
+
+
+        function addHeroFavourite() {
+
+            if (allAnime.length) {
+
+                addFavourite(allAnime[0]);
+
+            }
+        }
+
+
+        /* ==========================================================
+           SEARCH
+        ========================================================== */
+
+        function searchAnime() {
+
+            const value =
+                document.getElementById("searchInput")
+                    .value
+                    .trim()
+                    .toLowerCase();
+
+            if (value === "") {
+
+                document.getElementById("searchResults").style.display = "none";
+
+                if (document.getElementById("homePage").style.display !== "none") {
+                    return;
+                }
+
+                return;
+            }
+
+            document.getElementById("homePage").style.display = "none";
+            document.getElementById("animePage").style.display = "none";
+            document.getElementById("genrePage").style.display = "none";
+            document.getElementById("favouritePage").style.display = "none";
+
+            document.getElementById("searchResults").style.display = "block";
+
+            const results =
+                allAnime.filter(anime => {
+
+                    const title =
+                        (anime.title_english || anime.title || "")
+                            .toLowerCase();
+
+                    const japanese =
+                        (anime.title || "")
+                            .toLowerCase();
+
+                    return title.includes(value) ||
+                        japanese.includes(value);
+                });
+
+            const grid =
+                document.getElementById("searchGrid");
+
+            grid.innerHTML = "";
+
+            if (results.length === 0) {
+
+                grid.innerHTML = `
+            <div class="noResults"
+            style="grid-column:1/-1">
+                🔍<br><br>
+                No anime found
+            </div>
+        `;
+
+                return;
+            }
+
+            results.forEach(anime => {
+                grid.appendChild(createAnimeCard(anime));
+            });
+        }
+
+
+        /* ==========================================================
+           LANGUAGE
+        ========================================================== */
+
+        function openLanguages() {
+
+            document.getElementById("languageMenu")
+                .classList.toggle("show");
+        }
+
+
+        function changeLanguage(lang) {
+
+            currentLang = lang;
+
+            document.getElementById("languageMenu")
+                .classList.remove("show");
+
+            const data = translations[lang];
+
+            document.querySelectorAll("[data-i18n]")
+                .forEach(element => {
+
+                    const key =
+                        element.getAttribute("data-i18n");
+
+                    if (data[key]) {
+                        element.textContent = data[key];
+                    }
+
+                });
+
+            const names = {
+                en: "EN",
+                ja: "JP",
+                ta: "TA",
+                hi: "HI"
+            };
+
+            document.getElementById("currentLanguage")
+                .textContent = names[lang];
+
+            localStorage.setItem(
+                "animetoonLanguage",
+                lang
+            );
+        }
+
+
+        /* ==========================================================
+           DARK / WHITE MODE
+        ========================================================== */
+
+        function toggleTheme() {
+
+            document.body.classList.toggle("light");
+
+            const mode =
+                document.body.classList.contains("light")
+                    ? "light" : "dark";
+
+            localStorage.setItem(
+                "animetoonTheme",
+                mode
+            );
+        }
+
+
+        /* ==========================================================
+           MOBILE SIDEBAR
+        ========================================================== */
+
+        function toggleSidebar() {
+
+            document.getElementById("sidebar")
+                .classList.toggle("open");
+        }
+
+
+        /* ==========================================================
+           TRENDING SLIDER
+        ========================================================== */
+
+        function scrollTrending() {
+
+            const slider =
+                document.getElementById("trendingSlider");
+
+            slider.scrollBy({
+                left: 500,
+                behavior: "smooth"
+            });
+        }
+
+
+        /* ==========================================================
+           CLOSE MODAL OUTSIDE
+        ========================================================== */
+
+        document.getElementById("animeModal")
+            .addEventListener("click", function (e) {
+
+                if (e.target === this) {
+                    closeModal();
+                }
+
+            });
+
+
+        /* ==========================================================
+           LOAD SAVED SETTINGS
+        ========================================================== */
+
+        const savedTheme =
+            localStorage.getItem("animetoonTheme");
+
+        if (savedTheme === "light") {
+            document.body.classList.add("light");
+        }
+
+
+        const savedLanguage =
+            localStorage.getItem("animetoonLanguage");
+
+        if (savedLanguage) {
+
+            changeLanguage(savedLanguage);
+
+        }
+
+
+        /* ==========================================================
+           LOAD SAVED FAVOURITES
+        ========================================================== */
+
+        try {
+
+            favourites =
+                JSON.parse(
+                    localStorage.getItem("animetoonFavourites")
+                ) || [];
+
+        } catch (e) {
+
+            favourites = [];
+
+        }
+
+
+        /* ==========================================================
+           START
+        ========================================================== */
+
+        loadAnime();
+
+    </script>
+
+</body>
+
+</html>
